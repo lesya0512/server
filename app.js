@@ -15,16 +15,27 @@ app.get('/schools', (req, res) => {
        res.json(schools) 
     });  
 })
-
+;
 app.get('/heroes', (req, res) => {
     Heroes.findAll({include: Schools}).then((heroes) => {
        res.json(heroes) 
     });  
-})
+});
+
+app.get('/heroesFilterBySchool/:id', (req, res) => {
+    const id = req.params.id
+
+    Heroes.findAll({
+        where: {school_id: id},
+        include: Schools
+    }).then((heroes) => {
+        res.json(heroes);
+    })
+});
 
 sequelize.sync().then(() => {
    app.listen(PORT, () => {
     console.log("Сервер запущен, Порт: ", PORT);
     }) 
-})
+});
 
